@@ -91,11 +91,26 @@ class Cls < Prawn::Document
   def mid_lat(latitude)
     lat_radians = latitude.to_d * Math::PI / 180
     mid_lat_height = 250 * Math.tan(lat_radians)
+    big_long_line = 250 * Math.cos(lat_radians)
+    mid_long_line_x = 250.to_f * 2 / 3 * Math.cos(lat_radians)
+    close_long_line_x = 250.to_f / 3 * Math.cos(lat_radians)
+    mid_long_line_y = 250.to_f * 2 / 3 * Math.sin(lat_radians)
+    close_long_line_y = 250.to_f / 3 * Math.sin(lat_radians)
+
     stroke do
       stroke_color '000099'
       self.line_width = 0.5
       line [270, 0], [20, mid_lat_height]
       line [270, 0], [520, mid_lat_height]
+
+      vertical_line 0, 648, at: 270 - big_long_line
+      vertical_line 0, 648, at: 270 + big_long_line
+
+      vertical_line 0, mid_long_line_y, at: 270 - mid_long_line_x
+      vertical_line 0, mid_long_line_y, at: 270 + mid_long_line_x
+
+      vertical_line 0, close_long_line_y, at: 270 - close_long_line_x
+      vertical_line 0, close_long_line_y, at: 270 + close_long_line_x
     end
   end
 end
