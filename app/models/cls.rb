@@ -60,6 +60,7 @@ class Cls < Prawn::Document
 
   def hash_marks
     (1..80).each do |n|
+      next if n.in?([20, 50, 80])
       if (n % 10).zero?
         left = 30
         right = 510
