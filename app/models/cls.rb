@@ -8,6 +8,7 @@ class Cls < Prawn::Document
     Cls.generate('CLS.pdf') do
       frame
       mid_lat($sight_data[:latitude])
+      label_increments($sight_data[:increment], $sight_data[:longitude])
     end
   end
 
@@ -115,5 +116,9 @@ class Cls < Prawn::Document
 
     fill_color '000099'
     draw_text latitude, size: 10, at: [530, 402]
+  end
+
+  def label_increments(increment, longitude)
+    #
   end
 end
