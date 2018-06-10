@@ -5,13 +5,13 @@ class Cls < Prawn::Document
   end
 
   def draw
-    Cls.generate('CLS.pdf') do
+    Cls.generate('tmp/CLS.pdf') do
       frame
       mid_lat($sight_data[:latitude])
       label_increments($sight_data[:increment], $sight_data[:longitude])
     end
 
-    'CLS.pdf'
+    'tmp/CLS.pdf'
   end
 
   def save_to_file(path)
