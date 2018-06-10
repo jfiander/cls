@@ -1,11 +1,13 @@
 class ClsControllerController < ApplicationController
   def sheet
-    Cls.new(sheet_params)
+    return unless sheet_params.present?
+
+    Cls.new(sheet_params).draw
   end
 
   private
 
   def sheet_params
-    params.permit()
+    params.permit(:latitude)
   end
 end
