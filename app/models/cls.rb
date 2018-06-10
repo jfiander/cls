@@ -117,10 +117,47 @@ class Cls < Prawn::Document
     end
 
     fill_color '000099'
-    draw_text latitude, size: 10, at: [530, 402]
+    draw_text display_degrees(latitude, axis: :ns, force_degree: true), size: 10, at: [530, 402]
   end
 
   def label_increments(increment, longitude)
-    #
+    draw_text display_degrees(longitude, axis: :ew, force_degree: true), size: 10, at: [250, -20]
+  end
+
+  def display_degrees(degrees, axis:, decimal: false, force_degree: false)
+    d, m, negative = parse_degrees(degrees, axis: axis)
+
+    m = decimal ? m.round(1) : m.round
+    symbol = axis_symbol(negative, axis)
+
+    if force_degree
+      m.zero? ? "#{d}° #{symbol}" : "#{d}° #{m}' #{symbol}"
+    else
+      m.zero? ? "#{d}° #{symbol}" : "#{m}'"
+    end
+  end
+
+  def parse_degrees(degrees, axis:)
+    if degrees =~ /\s/
+      d, m = degrees.split(/\s/)
+      d = d.to_i
+      m = m.to_d
+    else
+      deg = degrees.to_d
+      d = deg.to_i
+      m = ((deg - deg.to_i) * 60)
+    end
+
+    symbol = d.negative?
+
+    [d.abs, m.abs.round(1), symbol]
+  end
+
+  def axis_symbol(negative, axis)
+    if axis == :ns
+      negative ? 'S' : 'N'
+    elsif axis == :ew
+      negative ? 'E' : 'W'
+    end
   end
 end
