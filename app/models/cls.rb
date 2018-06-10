@@ -9,6 +9,7 @@ class Cls < Prawn::Document
       frame
       mid_lat($sight_data[:latitude])
       label_increments($sight_data[:increment], $sight_data[:latitude], $sight_data[:longitude])
+      top_info($sight_data[:name], $sight_data[:squadron], $sight_data[:sight_number])
     end
 
     'tmp/CLS.pdf'
@@ -138,7 +139,7 @@ class Cls < Prawn::Document
       lon = display_degrees(increment_degrees(longitude, inc), axis: :ew, force_degree: true)
 
       draw_text display_degrees(lat, axis: :ns), size: 10, at: [530, 402 + 81 * i]
-      draw_text display_degrees(lon, axis: :ew), size: 10, at: [260 + long_meridians(latitude)[:close_long_line_x] * i, -20]
+      draw_text display_degrees(lon, axis: :ew), size: 10, at: [260 + long_meridians(latitude)[:close_long_line_x] * i * -1, -20]
     end
   end
 
@@ -195,5 +196,11 @@ class Cls < Prawn::Document
     end
 
     "#{neg ? '-' : ''}#{d} #{m}"
+  end
+
+  def top_info(name, squadron, sight_number)
+    draw_text "Name: #{name}", size: 12, at: [350, 700]
+    draw_text "Squadron: #{squadron}", size: 12, at: [350, 670]
+    draw_text "Sight # #{sight_number}", size: 12, at: [60, 670]
   end
 end

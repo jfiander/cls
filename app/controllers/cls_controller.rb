@@ -13,6 +13,6 @@ class ClsController < ApplicationController
   private
 
   def sheet_params
-    params.permit(:latitude, :longitude, :increment)
+    params.permit(:latitude, :longitude, :increment, :name, :squadron, :sight_number)
   end
 end
