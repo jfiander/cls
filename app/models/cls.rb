@@ -89,7 +89,7 @@ class Cls < Prawn::Document
   end
 
   def mid_lat(latitude)
-    lat_radians = latitude * Math::PI / 180
+    lat_radians = latitude.to_d * Math::PI / 180
     mid_lat_height = 250 * Math.tan(lat_radians)
     stroke do
       stroke_color '000099'
