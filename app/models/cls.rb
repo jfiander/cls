@@ -1,14 +1,13 @@
 class Cls < Prawn::Document
   def initialize(sight_data = {})
-    @sight_data = sight_data
     super()
+    $sight_data = sight_data
   end
 
   def draw
     Cls.generate('test.pdf') do
-      # stroke_axis
       frame
-      mid_lat(@sight_data[:latitude])
+      mid_lat($sight_data[:latitude])
     end
   end
 
@@ -21,14 +20,14 @@ class Cls < Prawn::Document
   def frame
     self.line_width = 0.25
     stroke_color '009900'
-
     fill_color '009900'
 
     longitude_arcs
 
     # Mask some unneeded lines
     fill_color 'FFFFFF'
-    fill_polygon([270, 0], [50, 300], [490, 300], [270, 0])
+    max_mid_lat_height = 250 * Math.tan(55 * Math::PI / 180)
+    fill_polygon([270, 0], [20, max_mid_lat_height], [520, max_mid_lat_height], [270, 0])
     fill_polygon([0, -1], [0, -100], [540, -100], [540, -1])
     fill_color '009900'
 
@@ -91,6 +90,13 @@ class Cls < Prawn::Document
   end
 
   def mid_lat(latitude)
-    #
+    lat_radians = latitude * Math::PI / 180
+    mid_lat_height = 250 * Math.tan(lat_radians)
+    stroke do
+      stroke_color '000099'
+      self.line_width = 0.5
+      line [270, 0], [20, mid_lat_height]
+      line [270, 0], [520, mid_lat_height]
+    end
   end
 end
