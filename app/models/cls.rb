@@ -8,7 +8,7 @@ class Cls < Prawn::Document
     Cls.generate('tmp/CLS.pdf') do
       frame
       mid_lat($sight_data[:latitude])
-      label_increments($sight_data[:increment], $sight_data[:longitude])
+      label_increments($sight_data[:increment], $sight_data[:latitude], $sight_data[:longitude])
     end
 
     'tmp/CLS.pdf'
@@ -92,40 +92,58 @@ class Cls < Prawn::Document
   end
 
   def mid_lat(latitude)
-    lat_radians = latitude.to_d * Math::PI / 180
-    mid_lat_height = 250 * Math.tan(lat_radians)
-    big_long_line = 250 * Math.cos(lat_radians)
-    mid_long_line_x = 250.to_f * 2 / 3 * Math.cos(lat_radians)
-    close_long_line_x = 250.to_f / 3 * Math.cos(lat_radians)
-    mid_long_line_y = 250.to_f * 2 / 3 * Math.sin(lat_radians)
-    close_long_line_y = 250.to_f / 3 * Math.sin(lat_radians)
-
     stroke do
       stroke_color '000099'
       self.line_width = 0.5
-      line [270, 0], [20, mid_lat_height]
-      line [270, 0], [520, mid_lat_height]
+      line [270, 0], [20, long_meridians(latitude)[:mid_lat_height]]
+      line [270, 0], [520, long_meridians(latitude)[:mid_lat_height]]
 
-      vertical_line 0, 648, at: 270 - big_long_line
-      vertical_line 0, 648, at: 270 + big_long_line
+      vertical_line 0, 648, at: 270 - long_meridians(latitude)[:big_long_line]
+      vertical_line 0, 648, at: 270 + long_meridians(latitude)[:big_long_line]
 
-      vertical_line 0, mid_long_line_y, at: 270 - mid_long_line_x
-      vertical_line 0, mid_long_line_y, at: 270 + mid_long_line_x
+      vertical_line 0, long_meridians(latitude)[:mid_long_line_y], at: 270 - long_meridians(latitude)[:mid_long_line_x]
+      vertical_line 0, long_meridians(latitude)[:mid_long_line_y], at: 270 + long_meridians(latitude)[:mid_long_line_x]
 
-      vertical_line 0, close_long_line_y, at: 270 - close_long_line_x
-      vertical_line 0, close_long_line_y, at: 270 + close_long_line_x
+      vertical_line 0, long_meridians(latitude)[:close_long_line_y], at: 270 - long_meridians(latitude)[:close_long_line_x]
+      vertical_line 0, long_meridians(latitude)[:close_long_line_y], at: 270 + long_meridians(latitude)[:close_long_line_x]
     end
 
     fill_color '000099'
     draw_text display_degrees(latitude, axis: :ns, force_degree: true), size: 10, at: [530, 402]
   end
 
-  def label_increments(increment, longitude)
+  def long_meridians(latitude)
+    lat_radians = latitude.to_d * Math::PI / 180
+
+    {
+      mid_lat_height: 250 * Math.tan(lat_radians),
+      big_long_line: 250 * Math.cos(lat_radians),
+      mid_long_line_x: 250.to_f * 2 / 3 * Math.cos(lat_radians),
+      close_long_line_x: 250.to_f / 3 * Math.cos(lat_radians),
+      mid_long_line_y: 250.to_f * 2 / 3 * Math.sin(lat_radians),
+      close_long_line_y: 250.to_f / 3 * Math.sin(lat_radians)
+    }
+  end
+
+  def label_increments(increment, latitude, longitude)
+    # Mid-Longitude
     draw_text display_degrees(longitude, axis: :ew, force_degree: true), size: 10, at: [250, -20]
+
+    (-3..3).each do |i|
+      next if i.zero?
+
+      inc = i * increment.to_i
+
+      lat = display_degrees(increment_degrees(latitude, inc), axis: :ns, force_degree: true)
+      lon = display_degrees(increment_degrees(longitude, inc), axis: :ew, force_degree: true)
+
+      draw_text display_degrees(lat, axis: :ns), size: 10, at: [530, 402 + 81 * i]
+      draw_text display_degrees(lon, axis: :ew), size: 10, at: [260 + long_meridians(latitude)[:close_long_line_x] * i, -20]
+    end
   end
 
   def display_degrees(degrees, axis:, decimal: false, force_degree: false)
-    d, m, negative = parse_degrees(degrees, axis: axis)
+    d, m, negative = parse_degrees(degrees)
 
     m = decimal ? m.round(1) : m.round
     symbol = axis_symbol(negative, axis)
@@ -137,20 +155,20 @@ class Cls < Prawn::Document
     end
   end
 
-  def parse_degrees(degrees, axis:)
+  def parse_degrees(degrees)
     if degrees =~ /\s/
-      d, m = degrees.split(/\s/)
+      d, m, = degrees.delete("'").delete('°').split(/\s/)
       d = d.to_i
-      m = m.to_d
+      m = m.to_d rescue 0.to_d
     else
       deg = degrees.to_d
       d = deg.to_i
       m = ((deg - deg.to_i) * 60)
     end
 
-    symbol = d.negative?
+    negative = d.negative?
 
-    [d.abs, m.abs.round(1), symbol]
+    [d.abs, m.abs.round(1), negative]
   end
 
   def axis_symbol(negative, axis)
@@ -159,5 +177,23 @@ class Cls < Prawn::Document
     elsif axis == :ew
       negative ? 'E' : 'W'
     end
+  end
+
+  def increment_degrees(degrees, increment)
+    d, m, neg = parse_degrees(degrees)
+
+    m += increment
+
+    while m >= 60
+      m -= 60
+      d += 1
+    end
+
+    while m < 0
+      m += 1
+      d -= 1
+    end
+
+    "#{neg ? '-' : ''}#{d} #{m}"
   end
 end
