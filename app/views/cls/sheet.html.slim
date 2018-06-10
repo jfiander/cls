@@ -1,0 +1,32 @@
+h1 CLS Sheet Generator
+
+p Enter degrees either as decimal (42.5) or with minutes separated by a space (42 30).
+p Enter negative degrees for South Latitude or East Longitude.
+p Degree and minute symbols will be ignored.
+
+= form_tag cls_path
+  = label_tag :latitude, 'Mid-Latitude'
+  = text_field_tag :latitude
+  br
+
+  = label_tag :longitude, 'Mid-Longitude'
+  = text_field_tag :longitude
+  br
+
+  = label_tag :increment, 'Axis Increment'
+  = text_field_tag :increment
+  br
+
+  = label_tag :name, 'Name'
+  = text_field_tag :name
+  br
+
+  = label_tag :squadron, 'Squadron'
+  = text_field_tag :squadron
+  br
+
+  = label_tag :sight_number, 'Sight Number'
+  = text_field_tag :sight_number
+  br
+
+  = submit_tag 'Generate CLS Sheet'
