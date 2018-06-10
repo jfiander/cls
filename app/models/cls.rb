@@ -5,7 +5,7 @@ class Cls < Prawn::Document
   end
 
   def draw
-    Cls.generate('test.pdf') do
+    Cls.generate('CLS.pdf') do
       frame
       mid_lat($sight_data[:latitude])
     end
