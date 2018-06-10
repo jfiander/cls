@@ -10,6 +10,8 @@ class Cls < Prawn::Document
       mid_lat($sight_data[:latitude])
       label_increments($sight_data[:increment], $sight_data[:longitude])
     end
+
+    'CLS.pdf'
   end
 
   def save_to_file(path)

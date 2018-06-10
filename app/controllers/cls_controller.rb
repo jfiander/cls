@@ -2,7 +2,7 @@ class ClsController < ApplicationController
   def sheet
     return unless sheet_params.present?
 
-    Cls.new(sheet_params).draw
+    send_file Cls.new(sheet_params).draw, disposition: :inline
   end
 
   private
