@@ -112,5 +112,8 @@ class Cls < Prawn::Document
       vertical_line 0, close_long_line_y, at: 270 - close_long_line_x
       vertical_line 0, close_long_line_y, at: 270 + close_long_line_x
     end
+
+    fill_color '000099'
+    draw_text latitude, size: 10, at: [530, 402]
   end
 end
