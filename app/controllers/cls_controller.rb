@@ -1,4 +1,4 @@
-class ClsControllerController < ApplicationController
+class ClsController < ApplicationController
   def sheet
     return unless sheet_params.present?
 
