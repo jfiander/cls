@@ -24,9 +24,7 @@ class Cls < Prawn::Document
 
     fill_color '009900'
 
-    self.line_width = 0.5
-    stroke_circle [270, 0], 250
-    self.line_width = 0.25
+    longitude_arcs
 
     # Mask some unneeded lines
     fill_color 'FFFFFF'
@@ -43,6 +41,18 @@ class Cls < Prawn::Document
     hash_marks
 
     compass
+  end
+
+  def longitude_arcs
+    (1..30).each do |n|
+      radius = n * 250.to_f / 30
+
+      dash([5, 2]) unless (n % 10).zero?
+      self.line_width = 0.75 if (n % 5).zero?
+      stroke_circle [270, 0], radius
+      self.line_width = 0.25 if (n % 5).zero?
+      undash
+    end
   end
 
   def hash_marks
