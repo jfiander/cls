@@ -24,7 +24,17 @@ class Cls < Prawn::Document
 
     fill_color '009900'
 
-    vertical_line 0, 648, at: 275
+    self.line_width = 0.5
+    stroke_circle [270, 0], 250
+    self.line_width = 0.25
+
+    # Mask some unneeded lines
+    fill_color 'FFFFFF'
+    fill_polygon([270, 0], [50, 300], [490, 300], [270, 0])
+    fill_polygon([0, -1], [0, -100], [540, -100], [540, -1])
+    fill_color '009900'
+
+    vertical_line 0, 648, at: 270
     horizontal_line 20, 520, at: 162
     horizontal_line 20, 520, at: 405
 
@@ -53,19 +63,19 @@ class Cls < Prawn::Document
   end
 
   def compass
-    stroke_circle [275, 405], 225
+    stroke_circle [270, 405], 225
 
     (0..359).each do |n|
       next if (n % 90).zero?
-      rotate((n * -1), origin: [275, 405]) do
-        vertical_line 615, 625, at: 275
-        draw_text '|', size: ((n % 10).zero? ? 10 : 7), at: [((n % 10).zero? ? 273.75 : 274), ((n % 10).zero? ? 622.5 : 625)]
+      rotate((n * -1), origin: [270, 405]) do
+        vertical_line 615, 625, at: 270
+        draw_text '|', size: ((n % 10).zero? ? 10 : 7), at: [((n % 10).zero? ? 268.75 : 269), ((n % 10).zero? ? 622.5 : 625)]
       end
     end
 
     (0..35).each do |n|
-      rotate((n * -10), origin: [275, 405]) do
-        draw_text n * 10, size: 7, at: [273, 632]
+      rotate((n * -10), origin: [270, 405]) do
+        draw_text n * 10, size: 7, at: [268, 632]
       end
     end
   end
