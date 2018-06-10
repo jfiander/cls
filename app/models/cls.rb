@@ -22,13 +22,13 @@ class Cls < Prawn::Document
     self.line_width = 0.25
     stroke_color '009900'
 
-    rectangle([20, 648], 500, 648)
+    fill_color '009900'
 
     vertical_line 0, 648, at: 275
     horizontal_line 20, 520, at: 162
     horizontal_line 20, 520, at: 405
 
-    fill_color '009900'
+    rectangle([20, 648], 500, 648)
 
     hash_marks
 
@@ -59,11 +59,10 @@ class Cls < Prawn::Document
       next if (n % 90).zero?
       rotate((n * -1), origin: [275, 405]) do
         vertical_line 615, 625, at: 275
-        draw_text '|', size: ((n % 10).zero? ? 10 : 7), at: [274, ((n % 10).zero? ? 622.5 : 625)]
+        draw_text '|', size: ((n % 10).zero? ? 10 : 7), at: [((n % 10).zero? ? 273.75 : 274), ((n % 10).zero? ? 622.5 : 625)]
       end
     end
 
-    fill_color '009900'
     (0..35).each do |n|
       rotate((n * -10), origin: [275, 405]) do
         draw_text n * 10, size: 7, at: [273, 632]
