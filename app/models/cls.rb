@@ -77,7 +77,6 @@ class Cls < Prawn::Document
     (0..359).each do |n|
       next if (n % 90).zero?
       rotate((n * -1), origin: [270, 405]) do
-        vertical_line 615, 625, at: 270
         draw_text '|', size: ((n % 10).zero? ? 10 : 7), at: [((n % 10).zero? ? 268.75 : 269), ((n % 10).zero? ? 622.5 : 625)]
       end
     end
