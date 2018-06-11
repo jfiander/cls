@@ -56,6 +56,11 @@ class Cls < Prawn::Document
     draw_text("S Err   #{(s_err.abs / 8.1).to_f} nm", size: 10, at: [245, 125]) if $sight_data[:sight_error].present?
   end
 
+  def draw_position(label, lat, lon)
+    draw_text("#{label}   #{display_degrees(lat, axis: :ns, force_degree: true, decimal: true)}", size: 10, at: [255, 125])
+    draw_text("#{display_degrees(lon, axis: :ew, force_degree: true, decimal: true)}", size: 10, at: [276, 110])
+  end
+
   private
 
   def frame
