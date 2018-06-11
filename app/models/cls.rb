@@ -8,13 +8,9 @@ class Cls < Prawn::Document
     Cls.generate('tmp/CLS.pdf') do
       frame
       mid_lat($sight_data[:latitude])
-      label_increments($sight_data[:increment], $sight_data[:latitude], $sight_data[:longitude])
-
-      plots.each do |plot|
-        send("draw_#{plot.keys.first}", *plot.values.first)
-      end
-
+      plots.each { |plot| send("draw_#{plot.keys.first}", *plot.values.first) }
       top_info($sight_data[:name], $sight_data[:squadron], $sight_data[:sight_number])
+      label_increments($sight_data[:increment], $sight_data[:latitude], $sight_data[:longitude])
     end
 
     'tmp/CLS.pdf'
@@ -231,10 +227,14 @@ class Cls < Prawn::Document
   def top_info(name, squadron, sight_number)
     fill_color 'FFFFFF'
     fill_polygon([20, 648], [20, 750], [520, 750], [520, 648])
+    fill_polygon([-50, 750], [19, 750], [19, 0], [-50, 0])
+    fill_polygon([521, 750], [570, 750], [570, 0], [521, 0])
     fill_color '000099'
     draw_text "Name: #{name}", size: 12, at: [350, 700]
     draw_text "Squadron: #{squadron}", size: 12, at: [350, 670]
     draw_text "Sight # #{sight_number}", size: 12, at: [60, 670]
+
+    image File.join(Rails.root, 'app', 'assets', 'images', 'WHEEL.thumb.png'), at: [230, 740], width: 80
   end
 
   def coordinates(lat, lon, mid_lat: $sight_data[:latitude], mid_lon: $sight_data[:longitude], increment: $sight_data[:increment])
