@@ -29,4 +29,11 @@ p Degree and minute symbols will be ignored.
   = text_field_tag :sight_number
   br
 
+  = label_tag :sight, 'Formatted Sight Data'
+  br
+  = text_area_tag :sight
+  p Demo data:
+  pre = demo_plot
+  br
+
   = submit_tag 'Generate CLS Sheet'

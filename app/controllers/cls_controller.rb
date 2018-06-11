@@ -9,20 +9,25 @@ class ClsController < ApplicationController
 
     cls = Cls.new(sheet_params)
 
-    send_file cls.draw(demo_plot), disposition: :inline
+    send_file cls.draw(JSON.parse(sheet_params[:sight])), disposition: :inline
   end
 
   private
 
   def sheet_params
-    params.permit(:latitude, :longitude, :increment, :name, :squadron, :sight_number)
+    params.permit(:latitude, :longitude, :increment, :name, :squadron, :sight_number, :sight)
   end
 
   def demo_plot
-    [
-      { fix: ['42 33.8', '82 47.1'] },
-      { intercept: [130, 7.2, '42 33.8', '82 47.1'] },
-      { track: [110, '42 33.8', '82 47.1'] }
-    ]
+    <<~JSON
+      [{
+        "fix": ["42 33.8", "82 47.1"]
+      }, {
+        "intercept": [130, 1.7, "42 33.8", "82 47.1"]
+      }, {
+        "track": [110, "42 33.8", "82 47.1"]
+      }]
+    JSON
   end
+  helper_method :demo_plot
 end
