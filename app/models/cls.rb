@@ -36,6 +36,11 @@ class Cls < Prawn::Document
     track(angle, coordinates(lat, lon))
   end
 
+  def draw_intercept(angle, dist, lat, lon)
+    int = intercept(angle, dist, origin: coordinates(lat, lon))
+    lop(int)
+  end
+
   private
 
   def frame
@@ -272,5 +277,26 @@ class Cls < Prawn::Document
         stroke { line([20, 162], [520, 648]) }
       end
     end
+  end
+
+  def intercept(angle, dist, origin: [270, 405], increment: $sight_data[:increment])
+    d = dist.to_d * 81 / increment.to_i
+    translate(origin[0] - 270, origin[1] - 405) do
+      rotate(360 - angle, origin: [270, 405]) do
+        dash([4, 4])
+        stroke { line([270, 405], [270, 405 + d]) }
+        undash
+      end
+    end
+
+    [360 - angle, d, origin]
+  end
+
+  def lop(intercept)
+    ep_x, ep_y = intercept[2]
+    ep_x -= intercept[1] * Math.cos(intercept[0])
+    ep_y += intercept[1] * Math.sin(intercept[0])
+
+    track(intercept[0] + 170, [ep_x, ep_y])
   end
 end

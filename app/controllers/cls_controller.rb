@@ -22,7 +22,7 @@ class ClsController < ApplicationController
     [
       { point: ['42 33.8', '82 47.1'] },
       { circle: ['42 33.8', '82 47.1'] },
-      { track: [20, '42 30', '82 40'] }
+      { intercept: [130, 7, '42 33.8', '82 47.1'] }
     ]
   end
 end
