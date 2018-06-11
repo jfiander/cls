@@ -229,10 +229,10 @@ class Cls < Prawn::Document
     raise 'Latitude out of bounds' if lat > max_lat || lat < min_lat
     raise 'Longitude out of bounds' if lon > max_lon || lon < min_lon
 
-    p_lat = ((lat - min_lat) / min_lat) * (max_y - min_y) * 100
-    p_lon = ((lon - min_lon) / min_lon) * (max_x - min_x) * 100
+    p_lat = ((lat - min_lat) / (max_lat - min_lat)) * (max_y - min_y)
+    p_lon = ((lon - min_lon) / (max_lon - min_lon)) * (max_x - min_x)
 
-    [p_lon, p_lat]
+    [max_x - p_lon, p_lat + 162]
   end
 
   def point(lat, lon)
