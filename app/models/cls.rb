@@ -7,9 +7,11 @@ class Cls < Prawn::Document
   def draw(plots)
     Cls.generate('tmp/CLS.pdf') do
       frame
-      mid_lat($sight_data[:latitude])
+      fill_color '000099'
+      stroke_color '000099'
       plots.each { |plot| send("draw_#{plot.keys.first}", *plot.values.first) }
       top_info($sight_data[:name], $sight_data[:squadron], $sight_data[:sight_number])
+      mid_lat($sight_data[:latitude])
       label_increments($sight_data[:increment], $sight_data[:latitude], $sight_data[:longitude])
     end
 
