@@ -20,8 +20,7 @@ class ClsController < ApplicationController
 
   def demo_plot
     [
-      { point: ['42 33.8', '82 47.1'] },
-      { circle: ['42 33.8', '82 47.1'] },
+      { fix: ['42 33.8', '82 47.1'] },
       { intercept: [130, 7, '42 33.8', '82 47.1'] }
     ]
   end

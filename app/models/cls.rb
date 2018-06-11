@@ -32,6 +32,11 @@ class Cls < Prawn::Document
     plot_circle(lat, lon)
   end
 
+  def draw_fix(lat, lon)
+    point(lat, lon)
+    plot_circle(lat, lon)
+  end
+
   def draw_track(angle, lat, lon)
     track(angle, coordinates(lat, lon))
   end
