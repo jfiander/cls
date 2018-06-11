@@ -30,7 +30,7 @@ class Cls < Prawn::Document
     plot_circle(lat, lon)
   end
 
-  def draw_fix(lat, lon, label = '')
+  def draw_fix(lat, lon, label = '', offset = 10)
     point(lat, lon)
     plot_circle(lat, lon)
     return unless label.present?
@@ -41,7 +41,7 @@ class Cls < Prawn::Document
       label = label[1..label.length]
     end
     rotate((do_rotate ? 45 : 0), origin: [x, y]) do
-      draw_text label, size: 8, at: [x + 10, y]
+      draw_text label, size: 8, at: [x + offset, y]
     end
   end
 
