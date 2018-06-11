@@ -53,7 +53,7 @@ class Cls < Prawn::Document
     int = intercept(angle, dist, origin: coordinates(lat, lon))
     s_err = lop(int)
 
-    draw_text "S Err   #{(s_err / 8.1).to_f} nm", size: 10, at: [245, 125]
+    draw_text("S Err   #{(s_err.abs / 8.1).to_f} nm", size: 10, at: [245, 125]) if $sight_data[:sight_error].present?
   end
 
   private

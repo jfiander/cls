@@ -15,7 +15,7 @@ class ClsController < ApplicationController
   private
 
   def sheet_params
-    params.permit(:latitude, :longitude, :increment, :name, :squadron, :sight_number, :sight)
+    params.permit(:latitude, :longitude, :increment, :name, :squadron, :sight_number, :sight_error, :sight)
   end
 
   def demo_plot
