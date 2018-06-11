@@ -230,10 +230,10 @@ class Cls < Prawn::Document
     min_lon = parse_degrees(increment_degrees(mid_lon, increment.to_i * -3))
     max_lon = parse_degrees(increment_degrees(mid_lon, increment.to_i * 3))
 
-    min_lat = (min_lat[0] + min_lat[1] / 60).round(1)
-    max_lat = (max_lat[0] + max_lat[1] / 60).round(1)
-    min_lon = (min_lon[0] + min_lon[1] / 60).round(1)
-    max_lon = (max_lon[0] + max_lon[1] / 60).round(1)
+    min_lat = (min_lat[0] + min_lat[1] / 60)
+    max_lat = (max_lat[0] + max_lat[1] / 60)
+    min_lon = (min_lon[0] + min_lon[1] / 60)
+    max_lon = (max_lon[0] + max_lon[1] / 60)
 
     raise 'Latitude out of bounds' if lat > max_lat || lat < min_lat
     raise 'Longitude out of bounds' if lon > max_lon || lon < min_lon
@@ -245,7 +245,7 @@ class Cls < Prawn::Document
   end
 
   def point(lat, lon)
-    translate(-1, -2.5) do
+    translate(-1.5, -3.5) do
       draw_text '•', size: 10, at: coordinates(lat, lon)
     end
   end
