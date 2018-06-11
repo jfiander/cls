@@ -28,6 +28,10 @@ class Cls < Prawn::Document
     point(lat, lon)
   end
 
+  def draw_circle(lat, lon)
+    plot_circle(lat, lon)
+  end
+
   def draw_track(angle, lat, lon)
     track(angle, coordinates(lat, lon))
   end
@@ -255,6 +259,10 @@ class Cls < Prawn::Document
     translate(-1.5, -3.5) do
       draw_text '•', size: 10, at: coordinates(lat, lon)
     end
+  end
+
+  def plot_circle(lat, lon)
+    stroke_circle(coordinates(lat, lon), 5)
   end
 
   def track(angle, coords = [270, 405])
