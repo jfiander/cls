@@ -43,7 +43,9 @@ class Cls < Prawn::Document
 
   def draw_intercept(angle, dist, lat, lon)
     int = intercept(angle, dist, origin: coordinates(lat, lon))
-    lop(int)
+    s_err = lop(int)
+
+    draw_text "S Err   #{(s_err / 8.1).to_f} nm", size: 10, at: [245, 125]
   end
 
   private
@@ -303,5 +305,7 @@ class Cls < Prawn::Document
     ep_y += intercept[1] * Math.sin(intercept[0])
 
     track(intercept[0] + 170, [ep_x, ep_y])
+
+    intercept[1]
   end
 end
