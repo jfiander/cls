@@ -247,9 +247,11 @@ class Cls < Prawn::Document
     fill_polygon([-50, 750], [19, 750], [19, 0], [-50, 0])
     fill_polygon([521, 750], [570, 750], [570, 0], [521, 0])
     fill_color '000099'
-    draw_text "Name: #{name}", size: 12, at: [350, 700]
-    draw_text "Squadron: #{squadron}", size: 12, at: [350, 670]
+    draw_text "Name: #{name}", size: 12, at: [350, 710]
+    draw_text "Squadron: #{squadron}", size: 12, at: [350, 680]
     draw_text "Sight # #{sight_number}", size: 12, at: [60, 670]
+    draw_text 'Constant Latitude Scale', size: 14, at: [20, 720]
+    draw_text 'Small Area Plotting Sheet', size: 12, at: [26, 705]
 
     image File.join(Rails.root, 'app', 'assets', 'images', 'WHEEL.thumb.png'), at: [230, 740], width: 80
   end
