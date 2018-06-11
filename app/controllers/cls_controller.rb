@@ -9,7 +9,7 @@ class ClsController < ApplicationController
 
     cls = Cls.new(sheet_params)
 
-    send_file cls.draw { demo_plot(cls) }, disposition: :inline
+    send_file cls.draw(demo_plot), disposition: :inline
   end
 
   private
@@ -18,8 +18,10 @@ class ClsController < ApplicationController
     params.permit(:latitude, :longitude, :increment, :name, :squadron, :sight_number)
   end
 
-  def demo_plot(cls)
-    cls.draw_point(42.45, 82.7)
-    cls.draw_track(20, 42.45, 82.7)
+  def demo_plot
+    [
+      { point: [42.5, 82.66667] },
+      { track: [20, 42.5, 82.66667] }
+    ]
   end
 end

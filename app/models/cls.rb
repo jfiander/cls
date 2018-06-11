@@ -4,13 +4,15 @@ class Cls < Prawn::Document
     $sight_data = sight_data
   end
 
-  def draw
+  def draw(plots)
     Cls.generate('tmp/CLS.pdf') do
       frame
       mid_lat($sight_data[:latitude])
       label_increments($sight_data[:increment], $sight_data[:latitude], $sight_data[:longitude])
 
-      yield if block_given?
+      plots.each do |plot|
+        send("draw_#{plot.keys.first}", *plot.values.first)
+      end
 
       top_info($sight_data[:name], $sight_data[:squadron], $sight_data[:sight_number])
     end
