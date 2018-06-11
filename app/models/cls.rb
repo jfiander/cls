@@ -10,6 +10,8 @@ class Cls < Prawn::Document
       mid_lat($sight_data[:latitude])
       label_increments($sight_data[:increment], $sight_data[:latitude], $sight_data[:longitude])
       top_info($sight_data[:name], $sight_data[:squadron], $sight_data[:sight_number])
+
+      point(42.45, 82.7)
     end
 
     'tmp/CLS.pdf'
@@ -203,5 +205,38 @@ class Cls < Prawn::Document
     draw_text "Name: #{name}", size: 12, at: [350, 700]
     draw_text "Squadron: #{squadron}", size: 12, at: [350, 670]
     draw_text "Sight # #{sight_number}", size: 12, at: [60, 670]
+  end
+
+  def coordinates(lat, lon, mid_lat: $sight_data[:latitude], mid_lon: $sight_data[:longitude], increment: $sight_data[:increment])
+    min_x = 270 - long_meridians(mid_lat)[:big_long_line]
+    max_x = 270 + long_meridians(mid_lat)[:big_long_line]
+    min_y = 405 - 81 * 3
+    max_y = 405 + 81 * 3
+
+    min_lat = parse_degrees(increment_degrees(mid_lat, increment.to_i * -3))
+    max_lat = parse_degrees(increment_degrees(mid_lat, increment.to_i * 3))
+    min_lon = parse_degrees(increment_degrees(mid_lon, increment.to_i * -3))
+    max_lon = parse_degrees(increment_degrees(mid_lon, increment.to_i * 3))
+
+    min_lat = (min_lat[0] + min_lat[1] / 60).round(1)
+    max_lat = (max_lat[0] + max_lat[1] / 60).round(1)
+    min_lon = (min_lon[0] + min_lon[1] / 60).round(1)
+    max_lon = (max_lon[0] + max_lon[1] / 60).round(1)
+
+    raise 'Latitude out of bounds' if lat > max_lat || lat < min_lat
+    raise 'Longitude out of bounds' if lon > max_lon || lon < min_lon
+
+    p_lat = ((lat - min_lat) / min_lat) * (max_y - min_y) * 100
+    p_lon = ((lon - min_lon) / min_lon) * (max_x - min_x) * 100
+
+    [p_lon, p_lat]
+  end
+
+  def point(lat, lon)
+    draw_text '•', size: 10, at: coordinates(lat, lon)
+  end
+
+  def track(lat, lon, angle)
+    #
   end
 end
