@@ -6,15 +6,15 @@ p Degree and minute symbols will be ignored.
 
 = form_tag cls_path
   = label_tag :latitude, 'Mid-Latitude'
-  = text_field_tag :latitude
+  = text_field_tag :latitude, '', required: true
   br
 
   = label_tag :longitude, 'Mid-Longitude'
-  = text_field_tag :longitude
+  = text_field_tag :longitude, '', required: true
   br
 
   = label_tag :increment, 'Axis Increment'
-  = text_field_tag :increment
+  = text_field_tag :increment, '', required: true
   br
 
   = label_tag :name, 'Name'
@@ -35,9 +35,7 @@ p Degree and minute symbols will be ignored.
 
   = label_tag :sight, 'Formatted Sight Data'
   br
-  = text_area_tag :sight
-  p Demo data:
-  pre = demo_plot
+  = text_area_tag :sight, '', required: true
   p Enter intercept Away as negative.
   p Prefix a label with 'd' to print it diagonally.
   br
