@@ -9,12 +9,10 @@ class Cls < Prawn::Document
       frame
       mid_lat($sight_data[:latitude])
       label_increments($sight_data[:increment], $sight_data[:latitude], $sight_data[:longitude])
+
+      yield if block_given?
+
       top_info($sight_data[:name], $sight_data[:squadron], $sight_data[:sight_number])
-
-      point(42.45, 82.7)
-      track(20, coordinates(42.45, 82.7))
-
-      point(42.5, 82.667) # Wrong position
     end
 
     'tmp/CLS.pdf'
@@ -22,6 +20,14 @@ class Cls < Prawn::Document
 
   def save_to_file(path)
     File.open(path, 'w+') { |f| f.write(render) }
+  end
+
+  def draw_point(lat, lon)
+    point(lat, lon)
+  end
+
+  def draw_track(angle, lat, lon)
+    track(angle, coordinates(lat, lon))
   end
 
   private
@@ -205,6 +211,9 @@ class Cls < Prawn::Document
   end
 
   def top_info(name, squadron, sight_number)
+    fill_color 'FFFFFF'
+    fill_polygon([20, 648], [20, 750], [520, 750], [520, 648])
+    fill_color '000099'
     draw_text "Name: #{name}", size: 12, at: [350, 700]
     draw_text "Squadron: #{squadron}", size: 12, at: [350, 670]
     draw_text "Sight # #{sight_number}", size: 12, at: [60, 670]
