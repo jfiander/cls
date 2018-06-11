@@ -237,6 +237,11 @@ class Cls < Prawn::Document
     min_lon = (min_lon[0] + min_lon[1] / 60)
     max_lon = (max_lon[0] + max_lon[1] / 60)
 
+    lat = parse_degrees(lat)
+    lat = (lat[0] + lat[1] / 60)
+    lon = parse_degrees(lon)
+    lon = (lon[0] + lon[1] / 60)
+
     raise 'Latitude out of bounds' if lat > max_lat || lat < min_lat
     raise 'Longitude out of bounds' if lon > max_lon || lon < min_lon
 
