@@ -21,7 +21,8 @@ class ClsController < ApplicationController
   def demo_plot
     [
       { fix: ['42 33.8', '82 47.1'] },
-      { intercept: [130, 7, '42 33.8', '82 47.1'] }
+      { intercept: [130, 7.2, '42 33.8', '82 47.1'] },
+      { track: [110, '42 33.8', '82 47.1'] }
     ]
   end
 end
