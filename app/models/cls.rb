@@ -12,6 +12,9 @@ class Cls < Prawn::Document
       top_info($sight_data[:name], $sight_data[:squadron], $sight_data[:sight_number])
 
       point(42.45, 82.7)
+      track(20, coordinates(42.45, 82.7))
+
+      point(42.5, 82.667) # Wrong position
     end
 
     'tmp/CLS.pdf'
@@ -163,7 +166,7 @@ class Cls < Prawn::Document
     if degrees =~ /\s/
       d, m, = degrees.delete("'").delete('°').split(/\s/)
       d = d.to_i
-      m = m.to_d rescue 0.to_d
+      m = m.to_d rescue 0
     else
       deg = degrees.to_d
       d = deg.to_i
@@ -233,10 +236,17 @@ class Cls < Prawn::Document
   end
 
   def point(lat, lon)
-    draw_text '•', size: 10, at: coordinates(lat, lon)
+    translate(-1, -2.5) do
+      draw_text '•', size: 10, at: coordinates(lat, lon)
+    end
   end
 
-  def track(lat, lon, angle)
-    #
+  def track(angle, coords = [270, 405])
+    x, y = coords
+    translate(x - 270, y - 405) do
+      rotate((45 - angle + 1), origin: [270, 405]) do
+        stroke { line([20, 162], [520, 648]) }
+      end
+    end
   end
 end
