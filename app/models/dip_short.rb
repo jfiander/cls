@@ -1,5 +1,6 @@
 class DipShort < Prawn::Document
   def self.guide(radius = 60, rings = 5, offset = 0)
+    # radius 65.625 matches chart 14850 (1:60000 scale)
     DipShort.generate('tmp/DS.pdf') do
       rings(radius, rings, offset)
     end
