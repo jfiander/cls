@@ -7,9 +7,11 @@ class Cls < Prawn::Document
   def draw(plots)
     Cls.generate('tmp/CLS.pdf') do
       frame
-      fill_color '000099'
-      stroke_color '000099'
+
+      set_colors '000000'
       plots.each { |plot| send("draw_#{plot.keys.first}", *plot.values.first) }
+      set_colors '000099'
+
       top_info($sight_data[:name], $sight_data[:squadron], $sight_data[:sight_number])
       mid_lat($sight_data[:latitude])
       label_increments($sight_data[:increment], $sight_data[:latitude], $sight_data[:longitude])
@@ -63,10 +65,14 @@ class Cls < Prawn::Document
 
   private
 
+  def set_colors(color)
+    fill_color color
+    stroke_color color
+  end
+
   def frame
     self.line_width = 0.25
-    stroke_color '009900'
-    fill_color '009900'
+    set_colors '009900'
 
     longitude_arcs
 
@@ -136,9 +142,10 @@ class Cls < Prawn::Document
   end
 
   def mid_lat(latitude)
+    set_colors '000099'
+    self.line_width = 0.75
+
     stroke do
-      stroke_color '000099'
-      self.line_width = 0.5
       line [270, 0], [20, long_meridians(latitude)[:mid_lat_height]]
       line [270, 0], [520, long_meridians(latitude)[:mid_lat_height]]
 
@@ -152,7 +159,6 @@ class Cls < Prawn::Document
       vertical_line 0, long_meridians(latitude)[:close_long_line_y], at: 270 + long_meridians(latitude)[:close_long_line_x]
     end
 
-    fill_color '000099'
     draw_text display_degrees(latitude, axis: :ns, force_degree: true), size: 10, at: [530, 402]
   end
 
@@ -247,6 +253,7 @@ class Cls < Prawn::Document
     fill_polygon([-50, 750], [19, 750], [19, 0], [-50, 0])
     fill_polygon([521, 750], [570, 750], [570, 0], [521, 0])
     fill_color '000099'
+
     draw_text "Name: #{name}", size: 12, at: [350, 710]
     draw_text "Squadron: #{squadron}", size: 12, at: [350, 680]
     draw_text "Sight # #{sight_number}", size: 12, at: [60, 670]
