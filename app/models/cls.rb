@@ -376,7 +376,7 @@ class Cls < Prawn::Document
     point([x, y])
     plot_circle([x, y])
 
-    distance_x = ((x - 270) / 81) * $sight_data[:increment].to_i
+    distance_x = ((270 - x) / 81) * $sight_data[:increment].to_i
     distance_y = ((y - 405) / 81) * $sight_data[:increment].to_i
     lat = display_degrees(increment_degrees($sight_data[:latitude], distance_y), axis: :ns, force_degree: true, decimal: true)
     lon = display_degrees(increment_degrees($sight_data[:longitude], distance_x), axis: :ew, force_degree: true, decimal: true)
