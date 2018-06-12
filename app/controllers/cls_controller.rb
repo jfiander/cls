@@ -21,7 +21,7 @@ class ClsController < ApplicationController
   def demo_plot
     <<~JSON
       [{
-        "fix": ["42 33.8", "82 47.1"]
+        "fix": ["42 33.8", "82 47.1", "2147 GPS", -60]
       }, {
         "intercept": [130, 1.7, "42 33.8", "82 47.1"]
       }, {
