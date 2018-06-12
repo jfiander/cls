@@ -1,7 +1,7 @@
 class DipShort < Prawn::Document
-  def self.guide(radius = 60, rings = 5)
+  def self.guide(radius = 60, rings = 5, offset = 0)
     DipShort.generate('tmp/DS.pdf') do
-      rings(radius, rings)
+      rings(radius, rings, offset)
     end
 
     'tmp/DS.pdf'
@@ -9,7 +9,8 @@ class DipShort < Prawn::Document
 
   private
 
-  def rings(base_radius = 20, max_nm = 5, origin: [270, 405])
+  def rings(base_radius = 20, max_nm = 5, offset = 0, origin: [270, 360])
+    origin = [origin[0] - offset, origin[1]] unless offset.zero?
     base_radius = base_radius.to_d
     max_step = (10 * (max_nm - 1))
     stroke_color 'FF00FF'
