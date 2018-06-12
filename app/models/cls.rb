@@ -328,7 +328,7 @@ class Cls < Prawn::Document
 
     ep = [
       ep_x + dist.abs * Math.sin(angle * Math::PI / 180),
-      ep_y - dist * Math.cos(angle * Math::PI / 180)
+      ep_y + dist.abs * Math.cos(angle * Math::PI / 180)
     ]
 
     track(angle + 90, ep)
