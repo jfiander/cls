@@ -253,9 +253,9 @@ class Cls < Prawn::Document
 
   def top_info(name, squadron, sight_number)
     fill_color 'FFFFFF'
-    fill_polygon([20, 648], [20, 750], [520, 750], [520, 648])
-    fill_polygon([-50, 750], [19, 750], [19, 0], [-50, 0])
-    fill_polygon([521, 750], [570, 750], [570, 0], [521, 0])
+    fill_polygon([20, 648], [20, 800], [520, 800], [520, 648])
+    fill_polygon([-50, 800], [19, 800], [19, 0], [-50, 0])
+    fill_polygon([521, 800], [570, 800], [570, 0], [521, 0])
     fill_color '000099'
 
     draw_text "Name: #{name}", size: 12, at: [350, 710]
