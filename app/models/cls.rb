@@ -325,7 +325,7 @@ class Cls < Prawn::Document
     [angle, d, origin]
   end
 
-  def lop(intercept, increment: $sight_data[:increment])
+  def lop(intercept, increment: $sight_data[:increment], plot_ep: false)
     angle, dist, (ep_x, ep_y) = intercept
 
     if dist.negative?
@@ -338,6 +338,15 @@ class Cls < Prawn::Document
       ep_y + dist.abs * Math.cos(angle * Math::PI / 180)
     ]
 
+    if plot_ep
+      rotate(45, origin: ep) do
+        translate(-5, -5) do
+          stroke do
+            rectangle(ep, 10, -10)
+          end
+        end
+      end
+    end
     track(angle + 90, ep)
 
     dist * increment.to_d / 10

@@ -33,6 +33,10 @@ p Degree and minute symbols will be ignored.
   = check_box_tag :sight_error, {}, default: true
   br
 
+  = label_tag :plot_ep, 'Plot EP'
+  = check_box_tag :plot_ep
+  br
+
   = label_tag :sight, 'Formatted Sight Data'
   br
   = text_area_tag :sight, '', required: true
