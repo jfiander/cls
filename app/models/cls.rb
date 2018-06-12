@@ -15,6 +15,10 @@ class Cls < Prawn::Document
       top_info($sight_data[:name], $sight_data[:squadron], $sight_data[:sight_number])
       mid_lat($sight_data[:latitude])
       label_increments($sight_data[:increment], $sight_data[:latitude], $sight_data[:longitude])
+
+      # Could be expanded to calculate three-body fixes
+      plot_intersection($lines.first(2)) if $lines.count == 2
+      $lines = []
     end
 
     'tmp/CLS.pdf'
@@ -25,16 +29,16 @@ class Cls < Prawn::Document
   end
 
   def draw_point(lat, lon)
-    point(lat, lon)
+    point(coordinates(lat, lon))
   end
 
   def draw_circle(lat, lon)
-    plot_circle(lat, lon)
+    plot_circle(coordinates(lat, lon))
   end
 
   def draw_fix(lat, lon, label = '', offset = 10)
-    point(lat, lon)
-    plot_circle(lat, lon)
+    point(coordinates(lat, lon))
+    plot_circle(coordinates(lat, lon))
     return unless label.present?
 
     x, y = coordinates(lat, lon)
@@ -53,9 +57,9 @@ class Cls < Prawn::Document
 
   def draw_intercept(angle, dist, lat, lon)
     int = intercept(angle, dist, origin: coordinates(lat, lon))
-    s_err = lop(int)
+    s_err = lop(int, plot_ep: $sight_data[:plot_ep])[1].abs
 
-    draw_text("S Err   #{(s_err.abs / 8.1).to_f} nm", size: 10, at: [245, 125]) if $sight_data[:sight_error].present?
+    draw_text("S Err   #{(s_err / 8.1).to_f} nm", size: 10, at: [245, 125]) if $sight_data[:sight_error].present?
   end
 
   def draw_position(label, lat, lon)
@@ -293,14 +297,14 @@ class Cls < Prawn::Document
     [max_x - p_lon, p_lat + 162]
   end
 
-  def point(lat, lon)
+  def point(coords)
     translate(-1.5, -3.5) do
-      draw_text '•', size: 10, at: coordinates(lat, lon)
+      draw_text '•', size: 10, at: coords
     end
   end
 
-  def plot_circle(lat, lon)
-    stroke_circle(coordinates(lat, lon), 5)
+  def plot_circle(coords)
+    stroke_circle(coords, 5)
   end
 
   def track(angle, coords = [270, 405])
@@ -349,6 +353,34 @@ class Cls < Prawn::Document
     end
     track(angle + 90, ep)
 
-    dist * increment.to_d / 10
+    s_err = dist * increment.to_d / 10
+
+    line = [
+      m = -1 * Math.tan(angle * Math::PI / 180),
+      ep[1] - (m * ep[0])
+    ]
+    $lines ||= []
+    $lines << line
+
+    [line, s_err]
+  end
+
+  def plot_intersection(lines)
+    b = lines[1][1] - lines[0][1]
+    m = lines[0][0] - lines[1][0]
+
+    x = b / m
+    y = lines[0][0] * x + lines[0][1]
+
+    point([x, y])
+    plot_circle([x, y])
+
+    distance_x = ((x - 270) / 81) * $sight_data[:increment].to_i
+    distance_y = ((y - 405) / 81) * $sight_data[:increment].to_i
+    lat = display_degrees(increment_degrees($sight_data[:latitude], distance_y), axis: :ns, force_degree: true, decimal: true)
+    lon = display_degrees(increment_degrees($sight_data[:longitude], distance_x), axis: :ew, force_degree: true, decimal: true)
+
+    draw_text("Fix   #{lat}", size: 10, at: [245, 125])
+    draw_text(lon, size: 10, at: [267, 115])
   end
 end
