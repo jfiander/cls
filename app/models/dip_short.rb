@@ -58,6 +58,7 @@ class DipShort < Prawn::Document
     end
 
     (1..360).each do |n|
+      next if (n % 30).zero?
       rotate(n, origin: [270, 360]) do
         self.line_width = 0.1
         stroke do
