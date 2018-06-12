@@ -318,15 +318,23 @@ class Cls < Prawn::Document
     [angle, d, origin]
   end
 
-  def lop(intercept, increment: $sight_data[:increment])
+  def lop(intercept, increment: $sight_data[:increment], buffer: 15)
+    angle = intercept[0]
+    dist = intercept[1]
     ep_x, ep_y = intercept[2]
-    ep_x += intercept[1].abs * Math.cos(intercept[0])
-    ep_y -= intercept[1].abs * Math.sin(intercept[0])
 
-    puts "*****", intercept.inspect
+    if dist.negative?
+      angle += 180
+      angle = angle % 360
+      dist = dist.abs
+    end
 
-    track(intercept[0] + 90, [ep_x, ep_y])
+    ep_x -= dist * Math.cos(angle * Math::PI / 180) + buffer
+    ep_y -= dist * Math.sin(angle * Math::PI / 180) + buffer
+    ep = [ep_x, ep_y]
 
-    intercept[1] * increment.to_d / 10
+    track(angle + 90, ep)
+
+    dist * increment.to_d / 10
   end
 end
