@@ -1,8 +1,4 @@
 class DipShort < Prawn::Document
-  # def initialize
-  #   super()
-  # end
-
   def self.guide(radius = 60, rings = 5)
     DipShort.generate('tmp/DS.pdf') do
       rings(radius, rings)
