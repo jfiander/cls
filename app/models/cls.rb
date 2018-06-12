@@ -372,6 +372,7 @@ class Cls < Prawn::Document
     x = b / m
     y = lines[0][0] * x + lines[0][1]
 
+    set_colors('000000')
     point([x, y])
     plot_circle([x, y])
 
