@@ -7,6 +7,12 @@ class DipShortController < ApplicationController
     send_file(DipShort.guide(radius, rings, offset), disposition: :inline)
   end
 
+  def compass
+    radius = dip_short_params[:radius] ? dip_short_params[:radius].to_d : 60
+
+    send_file(DipShort.compass(radius), disposition: :inline)
+  end
+
   private
 
   def dip_short_params
