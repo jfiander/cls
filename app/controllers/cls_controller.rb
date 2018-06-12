@@ -50,4 +50,19 @@ class ClsController < ApplicationController
     JSON
   end
   helper_method :demo_plot_ap
+
+  def demo_2_body
+    <<~JSON
+      [{
+        "fix": ["42 33.8", "82 47.1", "2147 GPS", 10]
+      }, {
+        "intercept": [130, 1.7, "42 33.8", "82 47.1"]
+      }, {
+        "intercept": [60, -2.1, "42 33.8", "82 47.1"]
+      }, {
+        "track": [110, "42 33.8", "82 47.1"]
+      }]
+    JSON
+  end
+  helper_method :demo_2_body
 end
