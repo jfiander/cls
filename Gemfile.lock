@@ -85,7 +85,7 @@ GEM
     prawn (2.1.0)
       pdf-core (~> 0.6.1)
       ttfunk (~> 1.4.0)
-    puma (3.12.2)
+    puma (3.12.3)
     rack (2.0.8)
     rack-test (0.6.3)
       rack (>= 1.0)
