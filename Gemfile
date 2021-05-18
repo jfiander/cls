@@ -7,7 +7,7 @@ end
 
 gem 'rails', '~> 5.2.4.5'
 
-gem 'puma', '~> 3.12'
+gem 'puma', '~> 4.3'
 gem 'sqlite3'
 
 gem 'coffee-rails', '~> 4.2'
